@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <input type="text" v-model="newUser" placeholder="Enter new user's name..">
+            <button @click="addUser">Add user</button>
+        </div>
+
+
+        <div  class="users">
+            <div id="user" @click="openModal(user)" v-for="user in users">{{user.name}}
+                 <button @click="deleteUser(user.id)">Delete user</button>
+                </div>
+            <div class="modal" v-if="selectedUser">
+                <input type="text" v-model="selectedUser.name" placeholder="Enter new name">
+                <button @click="updateUser">Save</button>
+                <button @click="closeModal">Cancel</button>
+                
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script>
+    var vueApp = new Vue({
+        el:"#app",
+        data:{
+            users:[],
+            newUser:'',
+            selectedUser:null,
+            selectedUserId:null
+        },
+        computed:{
+            selectedUser(){
+                return this.users.find(user => user.id === this.selectedUserId)
+            }
+        },
+        methods: {
+            async deleteUser(id) {
+            try {
+                await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, { method: 'DELETE' })
+                this.users = this.users.filter(user => user.id !== id)
+            } catch (error) {
+                console.error(error)
+            }
+            },
+            closeModal(){
+                this.selectedUser=null
+            },
+            openModal(user){
+                this.selectedUser=user
+            },
+            updateUser(){
+                fetch(`https://jsonplaceholder.typicode.com/users/${this.selectedUser.id}`, {
+                method: "PUT",
+                body: JSON.stringify({ name: this.selectedUser.name }),
+                headers: {
+                "Content-type": "application/json; charset=UTF-8"
+                }
+                 })
+                .then(response => response.json())
+                .then(data => {
+                console.log(data);
+                this.closeModal();
+                });
+            },
+            addUser(){
+                fetch('https://jsonplaceholder.typicode.com/users',{
+                    method:'POST',
+                    body:JSON.stringify({name:this.newUser}),
+                    headers:{"Content-type": "application/json; charset=UTF-8"}
+                }).then(response => response.json()).then(data => {
+                    this.users.push(data)
+                    this.newUser = "";
+                })
+                
+            },
+            
+        },
+        created(){
+            fetch('https://jsonplaceholder.typicode.com/users')
+            .then(response => response.json()).then(data => this.users = data)
+        }
+    })
+</script>
+
+
+
+
+</html>

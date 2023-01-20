@@ -1,0 +1,19 @@
+#app{
+    display: flex;
+    justify-content: center;
+    background-color: lightgreen;
+}
+
+.users p{
+    cursor: pointer;
+}
+
+
+.modal{
+    position: absolute;
+    background-color: aqua;
+    left: 45%;
+    top:45%;
+    width: 30%;
+    height: 5vh;
+}
