@@ -27,6 +27,11 @@
                 
             </div>
         </div>
+
+
+        <div>
+            <p>{{testUser}}</p>
+        </div>
     </div>
 </body>
 
@@ -38,7 +43,8 @@
             users:[],
             newUser:'',
             selectedUser:null,
-            selectedUserId:null
+            selectedUserId:null,
+            testUser:null
         },
         computed:{
             selectedUser(){
@@ -88,9 +94,11 @@
             
         },
         created(){
-            fetch('http://localhost:7204/api/users')
-            .then(response => response.json()).then(data => this.users = data)
-        }
+             fetch('http://localhost:5016/users/GetData')
+             .then(response => response.json()).then(data => this.testUser = data.name)
+            
+        },
+        
     })
 </script>
 

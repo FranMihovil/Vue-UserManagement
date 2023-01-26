@@ -9,6 +9,7 @@ public class UsersController : Controller
     public ActionResult GetData()
     {
         var data = new Users { Id = 1, Name = "TestUser" };
+       
         return Json(data);
     }
 }
