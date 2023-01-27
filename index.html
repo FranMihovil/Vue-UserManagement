@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+
     <title>Document</title>
 </head>
 <body>
@@ -29,9 +30,7 @@
         </div>
 
 
-        <div>
-            <p>{{testUser}}</p>
-        </div>
+    
     </div>
 </body>
 
@@ -44,7 +43,6 @@
             newUser:'',
             selectedUser:null,
             selectedUserId:null,
-            testUser:null
         },
         computed:{
             selectedUser(){
@@ -54,7 +52,7 @@
         methods: {
             async deleteUser(id) {
             try {
-                await fetch(`https://jsonplaceholder.typicode.com/users/${id}`, { method: 'DELETE' })
+                await fetch(`http://localhost:5016/users/DeleteUser/${id}`, { method: 'DELETE' })
                 this.users = this.users.filter(user => user.id !== id)
             } catch (error) {
                 console.error(error)
@@ -67,7 +65,7 @@
                 this.selectedUser=user
             },
             updateUser(){
-                fetch(`https://jsonplaceholder.typicode.com/users/${this.selectedUser.id}`, {
+                fetch(`http://localhost:5016/users/UpdateUser/${this.selectedUser.id}`, {
                 method: "PUT",
                 body: JSON.stringify({ name: this.selectedUser.name }),
                 headers: {
@@ -76,7 +74,7 @@
                  })
                 .then(response => response.json())
                 .then(data => {
-                console.log(data);
+                this.users = data
                 this.closeModal();
                 });
             },
@@ -95,7 +93,7 @@
         },
         created(){
              fetch('http://localhost:5016/users/GetData')
-             .then(response => response.json()).then(data => this.testUser = data.name)
+             .then(response => response.json()).then(data => this.users = data)
             
         },
         

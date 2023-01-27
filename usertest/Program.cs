@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 
 
+
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,14 +20,45 @@ var app = builder.Build();
 // }
 
 //app.UseHttpsRedirection();
+
+
+
+
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Users}/{action=GetData}/{id?}");
+//app.UseCors("CorsPolicy");
+
+app.UseCors(options => options.WithOrigins("http://127.0.0.1:5500")
+.AllowAnyMethod().AllowAnyHeader());
+
+
+
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller=Users}/{action=GetData}/{id?}");
+
+// app.MapControllerRoute(
+//     name: "delete",
+//     pattern: "{controller=Users}/{action=DeleteUser}/{id?}");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Users}/{action=GetData}/{id?}");
+    endpoints.MapControllerRoute(
+        name: "DeleteUser",
+        pattern: "{controller=Users}/{action=DeleteUser}/{id}");
+    endpoints.MapControllerRoute(
+        name: "UpdateUser",
+        pattern: "{controller=Users}/{action=UpdateUser}/{id}");
+});
+
+
 
 app.Run();
