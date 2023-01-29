@@ -12,7 +12,7 @@ public class UsersController : Controller
         _users.Add(new Users{Id=1,Name="Dragan"});
         _users.Add(new Users{Id=2,Name="Josip"});
         _users.Add(new Users{Id=3,Name="Ivan"});
-        _users.Add(new Users{Id=3,Name="Gordan"});
+        _users.Add(new Users{Id=4,Name="Gordan"});
     }
 
     [HttpGet]
@@ -27,12 +27,14 @@ public class UsersController : Controller
     [HttpDelete]
      public ActionResult DeleteUser(int id)
      {
+        
+
         if(_users == null)
         _users = new List<Users>();
         _users.Add(new Users{Id=1,Name="Dragan"});
         _users.Add(new Users{Id=2,Name="Josip"});
         _users.Add(new Users{Id=3,Name="Ivan"});
-        _users.Add(new Users{Id=3,Name="Gordan"});
+        _users.Add(new Users{Id=4,Name="Gordan"});
     
          _users.RemoveAll(u => u.Id == id);
          return Json(_users);
@@ -44,18 +46,19 @@ public class UsersController : Controller
     public ActionResult UpdateUser(int id, [FromBody] Users user)
     {
 
-        if(_users == null)
-        _users = new List<Users>();
-        _users.Add(new Users{Id=1,Name="Dragan"});
-        _users.Add(new Users{Id=2,Name="Josip"});
-        _users.Add(new Users{Id=3,Name="Ivan"});
-        _users.Add(new Users{Id=3,Name="Gordan"});
+        
+         if(_users == null)
+         _users = new List<Users>();
+         _users.Add(new Users{Id=1,Name="Dragan"});
+         _users.Add(new Users{Id=2,Name="Josip"});
+         _users.Add(new Users{Id=3,Name="Ivan"});
+         _users.Add(new Users{Id=4,Name="Gordan"});
 
-        foreach (var userr in _users)
+        foreach (var useri in _users)
         {
-            if(userr.Id == id){
-                userr.Name = user.Name;
-                return Ok(new { message = "User updated successfully", userr });
+            if(useri.Id == id){
+                useri.Name = user.Name;
+                return Ok(new { message = "User updated successfully", _users });
             }
         }
         
